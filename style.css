@@ -54,6 +54,11 @@
     justify-content: flex-end;
 }
 
+.clear-button {
+    margin-right: 3px;
+    margin-bottom: 10px;
+}
+
 .number-container {
     height: 450px;
     width: 400px;
