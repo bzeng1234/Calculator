@@ -45,3 +45,59 @@ function displayValue(a) {
     }
 }
 
+function inputNumber(number) {
+    let numberScreen = document.querySelector("div.display-number");
+    numberScreen.textContent += number;
+}
+
+function inputOperator(operator) {
+    let numberScreen = document.querySelector("div.display-number");
+    let expressionScreen = document.querySelector("div.cache-expression");
+    
+    expressionScreen.textContent += numberScreen.textContent + operator;
+
+    numberScreen.textContent = "";
+}
+
+function startoperation() {
+
+}
+
+function clearScreen() {
+    let numberScreen = document.querySelector("div.display-number");
+    let expressionScreen = document.querySelector("div.cache-expression");
+    
+    expressionScreen.textContent = "";
+    numberScreen.textContent = "";
+}
+
+function readInput(input) {
+    console.log(input.target.getAttribute('class'));
+    // check if the input button is a number or an operator
+    
+    let inputClass = input.target.getAttribute('class');
+    let buttonValue = input.target.getAttribute('data-key');
+
+    if(inputClass === 'number') {
+        //input numbers
+        inputNumber(buttonValue);
+    } else if (inputClass === 'operator') {
+        inputOperator(buttonValue);
+    } else if (inputClass === 'clear') {
+        clearScreen();
+    } else if (inputClass === 'equal') {
+        startoperation();
+    } else {
+        alert("Invalid Selection.")
+    }
+}
+
+let numberScreen = document.querySelector("div.display-number");
+let buttonList = document.querySelectorAll("button");
+
+buttonList.forEach(button => {
+    button.addEventListener('click', (e) => {
+        readInput(e);
+    })
+});
+
