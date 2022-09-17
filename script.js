@@ -1,3 +1,5 @@
+let expression = [];
+
 function add(a, b) {
     return a + b;
 }
@@ -53,9 +55,32 @@ function inputNumber(number) {
 function inputOperator(operator) {
     let numberScreen = document.querySelector("div.display-number");
     let expressionScreen = document.querySelector("div.cache-expression");
-    
-    expressionScreen.textContent += numberScreen.textContent + operator;
 
+    // if operator input had no preceding number
+    if (numberScreen.textContent === '') {
+        let lastNewIndex = expressionScreen.textContent.length-1;
+        let lastValue = expressionScreen.textContent.charAt(lastNewIndex);
+
+        //if the last value of the expression is an operator, ignore it.. we don't want 8++
+        if ( (operator === '+' || operator === '-' || operator === '*' || operator === '/') && isNaN(lastValue) ) {
+            return;
+        } else if (operator === '=' && isNaN(lastValue)) {
+            expressionScreen.textContent = expressionScreen.textContent.slice(0, lastNewIndex);
+            expression.pop();
+        } else if (!isNaN(lastValue)) {
+            expressionScreen.textContent += operator;
+            expression.push(operator);
+        }
+    } else {
+        if (operator === '=') {
+            expressionScreen.textContent += numberScreen.textContent;
+            expression.push(numberScreen.textContent);
+        } else {
+            expressionScreen.textContent += numberScreen.textContent + operator;
+            expression.push(numberScreen.textContent);
+            expression.push(operator);
+        }
+    }
     numberScreen.textContent = "";
 }
 
@@ -66,9 +91,10 @@ function startoperation() {
 function clearScreen() {
     let numberScreen = document.querySelector("div.display-number");
     let expressionScreen = document.querySelector("div.cache-expression");
-    
+
     expressionScreen.textContent = "";
     numberScreen.textContent = "";
+    expression = [];
 }
 
 function readInput(input) {
@@ -86,6 +112,7 @@ function readInput(input) {
     } else if (inputClass === 'clear') {
         clearScreen();
     } else if (inputClass === 'equal') {
+        inputOperator(buttonValue);
         startoperation();
     } else {
         alert("Invalid Selection.")
